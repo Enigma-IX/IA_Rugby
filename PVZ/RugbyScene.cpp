@@ -45,12 +45,17 @@ void RugbyScene::OnInitialize()
 		// Assign area based on sorted position
 		if (i == 2) {
 			pRugbyMan[index]->SetAreaIndex(0); // Area A (middle entity)
+			mAreas[0] = { 0, 1 * height / 4, width, 3 * height / 4 };
 		}
 		else if (i < 2) {
 			pRugbyMan[index]->SetAreaIndex(1); // Area B (top entities)
+			mAreas[1] = { 0, 0, width, height / 2 };
+
 		}
 		else {
 			pRugbyMan[index]->SetAreaIndex(2); // Area C (bottom entities)
+			mAreas[2] = { 0, height / 2 , width, height };
+
 		}
 	}
 }
