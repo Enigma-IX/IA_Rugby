@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /SFML-2.5.1
 /ProjectRenamer.py
+
+/x64
