@@ -10,29 +10,26 @@ void RugbyScene::OnInitialize()
 	int width = GetWindowWidth();
 	int height = GetWindowHeight();
 
-	float plantRadius = height * 0.075f;
+	float rugbyManRadius = height * 0.04f;
 
-	float plantStartY = height / (PLAN_COUNT * 2.f);
-	float plantGapY = height / (float)PLAN_COUNT;
+	const std::pair<float, float> positions[] = {
+		{3/12.f, 6/12.f},
+		{2/12.f, 2/12.f},
+		{2/12.f, 10/12.f},
+		{1/12.f, 1/12.f},
+		{1/12.f, 11/12.f}
+	};
 
-	float plantStartX = width * 0.05f;
+	constexpr size_t numPositions = sizeof(positions) / sizeof(positions[0]);
+	RugbyMan* pRugbyMan[numPositions];
 
-	RugbyMan* pRugbyMan[PLAN_COUNT];
+	for (size_t i = 0; i < numPositions; ++i) {
+		float x = positions[i].first;
+		float y = positions[i].second;
+		pRugbyMan[i] = CreateEntity<RugbyMan>(rugbyManRadius, sf::Color::Green);
+		pRugbyMan[i]->SetPosition(x*width, y*height);
 
-	for (int i = 0; i < PLAN_COUNT; i++)
-	{
-		pRugbyMan[i] = CreateEntity<RugbyMan>(plantRadius, sf::Color::Green);
-		pRugbyMan[i]->SetPosition(plantStartX, plantStartY, 0.f, 0.5f);
-		pRugbyMan[i]->SetAreaIndex(i);
-
-		int xMin = plantStartX + plantRadius * 3.f;
-		int yMin = plantStartY - plantRadius;
-		int xMax = width;
-		int yMax = plantStartY + plantRadius;
-
-		mAreas[i] = { xMin, yMin, xMax, yMax };
-
-		plantStartY += plantGapY;
+		//pRugbyMan[i]->SetAreaIndex(i);
 	}
 }
 

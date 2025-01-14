@@ -27,7 +27,7 @@ public:
 	};
 
 	int mLaneRugbyCount[4] = { 0, 0, 0 ,0 };
-	AABB mAreas[4];
+	AABB mAreas[3];
 
 private:
 	int GetClickedArea(int x, int y) const;
