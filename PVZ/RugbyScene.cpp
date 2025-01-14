@@ -23,13 +23,35 @@ void RugbyScene::OnInitialize()
 	constexpr size_t numPositions = sizeof(positions) / sizeof(positions[0]);
 	RugbyMan* pRugbyMan[numPositions];
 
-	for (size_t i = 0; i < numPositions; ++i) {
-		float x = positions[i].first;
-		float y = positions[i].second;
-		pRugbyMan[i] = CreateEntity<RugbyMan>(rugbyManRadius, sf::Color::Green);
-		pRugbyMan[i]->SetPosition(x*width, y*height);
+	size_t indices[numPositions];
+	for (size_t i = 0; i < numPositions; ++i)
+		indices[i] = i;
 
-		//pRugbyMan[i]->SetAreaIndex(i);
+	// Sort indices based on the y-coordinate of positions
+	std::sort(indices, indices + numPositions, [&](size_t a, size_t b) {
+		return positions[a].second < positions[b].second;
+		});
+
+	// Assign entities to areas based on sorted indices
+	for (size_t i = 0; i < numPositions; ++i) {
+		size_t index = indices[i];
+		float x = positions[index].first;
+		float y = positions[index].second;
+
+		// Create entity and set its position
+		pRugbyMan[index] = CreateEntity<RugbyMan>(rugbyManRadius, sf::Color::Green);
+		pRugbyMan[index]->SetPosition(x * width, y * height);
+
+		// Assign area based on sorted position
+		if (i == 2) {
+			pRugbyMan[index]->SetAreaIndex(0); // Area A (middle entity)
+		}
+		else if (i < 2) {
+			pRugbyMan[index]->SetAreaIndex(1); // Area B (top entities)
+		}
+		else {
+			pRugbyMan[index]->SetAreaIndex(2); // Area C (bottom entities)
+		}
 	}
 }
 
