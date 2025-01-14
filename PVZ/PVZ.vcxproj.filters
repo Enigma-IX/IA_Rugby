@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{a8d0131e-eb50-44ac-848b-7a821ba71b21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\StateMachine">
+      <UniqueIdentifier>{54f9566d-eec3-46ad-82d3-6b67b6e11b84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PVZ">
+      <UniqueIdentifier>{656b759f-efb2-4f59-b546-0dd585a90074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PVZ\PlantStateMachine">
+      <UniqueIdentifier>{e5a990fd-2950-4273-9213-ca67aec6d3fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sample">
+      <UniqueIdentifier>{cb0c1b12-51a1-456e-88e6-82b04b889c68}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Debug.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Plant.cpp">
+      <Filter>PVZ</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>PVZ</Filter>
+    </ClCompile>
+    <ClCompile Include="PlantAction.cpp">
+      <Filter>PVZ\PlantStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>PVZ</Filter>
+    </ClCompile>
+    <ClCompile Include="PlantCondition.cpp">
+      <Filter>PVZ\PlantStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="DummyEntity.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleScene.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
+    <ClCompile Include="Action.inl">
+      <Filter>Engine\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="PVZScene.cpp">
+      <Filter>PVZ</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entity.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Plant.h">
+      <Filter>PVZ</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>PVZ</Filter>
+    </ClInclude>
+    <ClInclude Include="Condition.h">
+      <Filter>Engine\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Transition.h">
+      <Filter>Engine\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Engine\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="PlantAction.h">
+      <Filter>PVZ\PlantStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>PVZ</Filter>
+    </ClInclude>
+    <ClInclude Include="PlantCondition.h">
+      <Filter>PVZ\PlantStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="DummyEntity.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleScene.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="PVZScene.h">
+      <Filter>PVZ</Filter>
+    </ClInclude>
+    <ClInclude Include="Action.h">
+      <Filter>Engine\StateMachine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scene.inl">
+      <Filter>Engine</Filter>
+    </None>
+    <None Include="GameManager.inl">
+      <Filter>Engine</Filter>
+    </None>
+    <None Include="Condition.inl">
+      <Filter>Engine\StateMachine</Filter>
+    </None>
+    <None Include="Entity.inl">
+      <Filter>Engine\StateMachine</Filter>
+    </None>
+    <None Include="Transition.inl">
+      <Filter>Engine\StateMachine</Filter>
+    </None>
+    <None Include="StateMachine.inl">
+      <Filter>Engine\StateMachine</Filter>
+    </None>
+  </ItemGroup>
+</Project>
