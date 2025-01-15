@@ -20,7 +20,7 @@ void RugbyScene::OnInitialize()
 	};
 
 	
-	mAreas[0] = { 0, 1 * height / 4, width, 3 * height / 4 };
+	mAreas[0] = { 0, height / 4, width, 3 * height / 4 };
 	mAreas[1] = { 0, 0, width, height / 2 };
 	mAreas[2] = { 0, height / 2 , width, height };
 
@@ -41,13 +41,12 @@ void RugbyScene::OnInitialize()
 		float y = positions[index].second;
 
 		pRugbyMan[index] = CreateEntity<RugbyMan>(rugbyManRadius, sf::Color::Green);
-		pRugbyMan[index]->SetPosition(x * width, y * height);
 		pRugbyMan[index]->SetTeam(1);
 		pRugbyMan[index]->SetTag(RugbyScene::Tag::RUGBYMAN);
 		mRugbyMen.push_back(pRugbyMan[index]);
 
 		if (i == 2) {
-			pRugbyMan[index]->SetAreaIndex(0); // Area A (middle entity)			
+			pRugbyMan[index]->SetAreaIndex(0); // Area A (middle entity)
 		}
 		else if (i < 2) {
 			pRugbyMan[index]->SetAreaIndex(1); // Area B (top entities)
@@ -55,6 +54,7 @@ void RugbyScene::OnInitialize()
 		else {
 			pRugbyMan[index]->SetAreaIndex(2); // Area C (bottom entities)
 		}
+		pRugbyMan[index]->SetPosition(x * width, y * height);
 	}
 
 	for (size_t i = 0; i < numPositions; ++i) {
@@ -62,25 +62,26 @@ void RugbyScene::OnInitialize()
 		float y = positions[i].second;
 
 		RugbyMan* mirroredPlayer = CreateEntity<RugbyMan>(rugbyManRadius, sf::Color::Red);
-		mirroredPlayer->SetPosition(x * width, y * height);
 		mirroredPlayer->SetTeam(2);
 		mirroredPlayer->SetTag(RugbyScene::Tag::RUGBYMAN);
 		mRugbyMen.push_back(mirroredPlayer);
 
-		if (i == 2) {
+		// Recalcul de l'area index basé sur y
+		if (y >= 0.25f && y < 0.75f) {
 			mirroredPlayer->SetAreaIndex(0); // Area A
 		}
-		else if (i < 2) {
+		else if (y < 0.25f) {
 			mirroredPlayer->SetAreaIndex(1); // Area B
 		}
 		else {
 			mirroredPlayer->SetAreaIndex(2); // Area C
 		}
+		mirroredPlayer->SetPosition(x * width, y * height);
 	}
+
 
 	mBall = CreateEntity<Ball>(height * 0.02f, sf::Color::White);
 	mBall->SetPosition(width/2, height / 2);
-
 }
 
 void RugbyScene::OnUpdate()
