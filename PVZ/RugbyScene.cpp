@@ -19,6 +19,11 @@ void RugbyScene::OnInitialize()
 		{1/12.f, 11/12.f}
 	};
 
+	
+	mAreas[0] = { 0, 1 * height / 4, width, 3 * height / 4 };
+	mAreas[1] = { 0, 0, width, height / 2 };
+	mAreas[2] = { 0, height / 2 , width, height };
+
 	constexpr size_t numPositions = sizeof(positions) / sizeof(positions[0]);
 	RugbyMan* pRugbyMan[numPositions];
 
@@ -37,19 +42,37 @@ void RugbyScene::OnInitialize()
 
 		pRugbyMan[index] = CreateEntity<RugbyMan>(rugbyManRadius, sf::Color::Green);
 		pRugbyMan[index]->SetPosition(x * width, y * height);
+		pRugbyMan[index]->SetTeam(1);
 		mRugbyMen.push_back(pRugbyMan[index]);
 
 		if (i == 2) {
-			pRugbyMan[index]->SetAreaIndex(0); // Area A (middle entity)
-			mAreas[0] = { 0, 1 * height / 4, width, 3 * height / 4 };
+			pRugbyMan[index]->SetAreaIndex(0); // Area A (middle entity)			
 		}
 		else if (i < 2) {
 			pRugbyMan[index]->SetAreaIndex(1); // Area B (top entities)
-			mAreas[1] = { 0, 0, width, height / 2 };
 		}
 		else {
 			pRugbyMan[index]->SetAreaIndex(2); // Area C (bottom entities)
-			mAreas[2] = { 0, height / 2 , width, height };
+		}
+	}
+
+	for (size_t i = 0; i < numPositions; ++i) {
+		float x = 1.0f - positions[i].first;
+		float y = positions[i].second;
+
+		RugbyMan* mirroredPlayer = CreateEntity<RugbyMan>(rugbyManRadius, sf::Color::Red);
+		mirroredPlayer->SetPosition(x * width, y * height);
+		mirroredPlayer->SetTeam(2);
+		mRugbyMen.push_back(mirroredPlayer);
+
+		if (i == 2) {
+			mirroredPlayer->SetAreaIndex(0); // Area A
+		}
+		else if (i < 2) {
+			mirroredPlayer->SetAreaIndex(1); // Area B
+		}
+		else {
+			mirroredPlayer->SetAreaIndex(2); // Area C
 		}
 	}
 }
