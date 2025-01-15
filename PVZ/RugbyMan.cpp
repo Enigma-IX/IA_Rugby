@@ -79,3 +79,11 @@ void RugbyMan::OnUpdate()
 
 	//mpStateMachine->Update();
 }
+
+bool RugbyMan::IsMouseOver(const sf::Vector2i& mousePos) const
+{
+	sf::Vector2f pos = GetPosition();
+	float distance = std::sqrt(std::pow(mousePos.x - pos.x, 2) + std::pow(mousePos.y - pos.y, 2));
+	return distance <= GetRadius();
+}
+

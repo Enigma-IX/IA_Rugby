@@ -1,6 +1,8 @@
 #pragma once
 
 #include "GameManager.h"
+#include "RugbyMan.h"
+
 
 #include <list>
 
@@ -31,6 +33,9 @@ public:
 
 private:
 	int GetClickedArea(int x, int y) const;
+
+	RugbyMan* mSelectedPlayer = nullptr;
+	std::vector<RugbyMan*> mRugbyMen;
 
 public:
 	void OnInitialize() override;
