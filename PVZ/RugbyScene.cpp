@@ -102,7 +102,8 @@ void RugbyScene::OnEvent(const sf::Event& event)
 
 	int y = clickedArea->yMin + (clickedArea->yMax - clickedArea->yMin) / 2;*/
 
-	if (event.type == sf::Event::MouseButtonPressed) {
+	switch (event.type) {
+	case sf::Event::MouseButtonPressed:
 		for (RugbyMan* player : mRugbyMen) {
 			sf::Vector2f position = player->GetPosition();
 			float dx = position.x - event.mouseButton.x;
@@ -113,21 +114,29 @@ void RugbyScene::OnEvent(const sf::Event& event)
 				break;
 			}
 		}
-	}
-	else if (event.type == sf::Event::MouseButtonReleased) {
+		break;
+
+	case sf::Event::MouseButtonReleased:
 		mSelectedPlayer = nullptr;
-	}
-	else if (event.type == sf::Event::MouseMoved) {
+		break;
+
+	case sf::Event::MouseMoved:
 		if (mSelectedPlayer != nullptr) {
 			mSelectedPlayer->SetPosition(event.mouseMove.x, event.mouseMove.y);
 		}
-	}
-	else if (event.type == sf::Event::KeyPressed) {
+		break;
+
+	case sf::Event::KeyPressed:
 		if (event.key.code == sf::Keyboard::Space) {
 			if (mBall->mOwner == nullptr)
 				return;
 			mBall->mOwner->Shoot();
 		}
+		break;
+
+	default:
+		// Aucun traitement pour les autres types d'événements.
+		break;
 	}
 
 }
