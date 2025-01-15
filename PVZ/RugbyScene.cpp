@@ -1,5 +1,4 @@
 #include "RugbyScene.h"
-#include "RugbyMan.h"
 
 #include "Debug.h"
 
@@ -27,22 +26,19 @@ void RugbyScene::OnInitialize()
 	for (size_t i = 0; i < numPositions; ++i)
 		indices[i] = i;
 
-	// Sort indices based on the y-coordinate of positions
 	std::sort(indices, indices + numPositions, [&](size_t a, size_t b) {
 		return positions[a].second < positions[b].second;
 		});
 
-	// Assign entities to areas based on sorted indices
 	for (size_t i = 0; i < numPositions; ++i) {
 		size_t index = indices[i];
 		float x = positions[index].first;
 		float y = positions[index].second;
 
-		// Create entity and set its position
 		pRugbyMan[index] = CreateEntity<RugbyMan>(rugbyManRadius, sf::Color::Green);
 		pRugbyMan[index]->SetPosition(x * width, y * height);
+		mRugbyMen.push_back(pRugbyMan[index]);
 
-		// Assign area based on sorted position
 		if (i == 2) {
 			pRugbyMan[index]->SetAreaIndex(0); // Area A (middle entity)
 			mAreas[0] = { 0, 1 * height / 4, width, 3 * height / 4 };
@@ -50,12 +46,10 @@ void RugbyScene::OnInitialize()
 		else if (i < 2) {
 			pRugbyMan[index]->SetAreaIndex(1); // Area B (top entities)
 			mAreas[1] = { 0, 0, width, height / 2 };
-
 		}
 		else {
 			pRugbyMan[index]->SetAreaIndex(2); // Area C (bottom entities)
 			mAreas[2] = { 0, height / 2 , width, height };
-
 		}
 	}
 }
@@ -85,7 +79,7 @@ int RugbyScene::GetClickedArea(int x, int y) const
 
 void RugbyScene::OnEvent(const sf::Event& event)
 {
-	if (event.type != sf::Event::EventType::MouseButtonPressed)
+	/*if (event.type != sf::Event::EventType::MouseButtonPressed)
 		return;
 
 	int index = GetClickedArea(event.mouseButton.x, event.mouseButton.y);
@@ -95,7 +89,28 @@ void RugbyScene::OnEvent(const sf::Event& event)
 
 	const AABB* clickedArea = &mAreas[index];
 
-	int y = clickedArea->yMin + (clickedArea->yMax - clickedArea->yMin) / 2;
+	int y = clickedArea->yMin + (clickedArea->yMax - clickedArea->yMin) / 2;*/
+
+	if (event.type == sf::Event::MouseButtonPressed) {
+		for (RugbyMan* player : mRugbyMen) {
+			sf::Vector2f position = player->GetPosition();
+			float dx = position.x - event.mouseButton.x;
+			float dy = position.y - event.mouseButton.y;
+
+			if (std::sqrt(dx * dx + dy * dy) <= player->GetRadius()) {
+				mSelectedPlayer = player;
+				break;
+			}
+		}
+	}
+	else if (event.type == sf::Event::MouseButtonReleased) {
+		mSelectedPlayer = nullptr;
+	}
+	else if (event.type == sf::Event::MouseMoved) {
+		if (mSelectedPlayer != nullptr) {
+			mSelectedPlayer->SetPosition(event.mouseMove.x, event.mouseMove.y);
+		}
+	}
 
 }
 

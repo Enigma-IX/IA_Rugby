@@ -10,6 +10,8 @@ class RugbyMan : public Entity
 public:
 	void SetLane(int lane) { mLane = lane; }
 	void SetAreaIndex(int index) { mAreaIndex = index; }
+	bool IsMouseOver(const sf::Vector2i& mousePos) const;
+
 
 	int mAreaIndex;
 
