@@ -85,6 +85,10 @@ void RugbyScene::OnUpdate()
 
 		Debug::DrawRectangle(aabb.xMin, aabb.yMin, aabb.xMax - aabb.xMin, aabb.yMax - aabb.yMin, sf::Color::Red);
 	}
+
+	const AABB& aabb = mAreas[0];
+	Debug::DrawRectangle(aabb.xMin, aabb.yMin, aabb.xMax - aabb.xMin, aabb.yMax - aabb.yMin, sf::Color::Yellow);
+
 }
 
 int RugbyScene::GetClickedArea(int x, int y) const
