@@ -13,6 +13,7 @@ public:
 	void SetTeam(int team) { mTeam = team; }
 	bool IsMouseOver(const sf::Vector2i& mousePos) const;
 
+	void Shoot();
 
 	int mAreaIndex;
 	int mTeam;
@@ -20,5 +21,8 @@ public:
 protected:
 	void OnInitialize() override;
 	void OnUpdate() override;
+
+private:
+
 
 };

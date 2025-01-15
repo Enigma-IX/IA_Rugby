@@ -43,6 +43,7 @@ void RugbyScene::OnInitialize()
 		pRugbyMan[index] = CreateEntity<RugbyMan>(rugbyManRadius, sf::Color::Green);
 		pRugbyMan[index]->SetPosition(x * width, y * height);
 		pRugbyMan[index]->SetTeam(1);
+		pRugbyMan[index]->SetTag(RugbyScene::Tag::RUGBYMAN);
 		mRugbyMen.push_back(pRugbyMan[index]);
 
 		if (i == 2) {
@@ -63,6 +64,7 @@ void RugbyScene::OnInitialize()
 		RugbyMan* mirroredPlayer = CreateEntity<RugbyMan>(rugbyManRadius, sf::Color::Red);
 		mirroredPlayer->SetPosition(x * width, y * height);
 		mirroredPlayer->SetTeam(2);
+		mirroredPlayer->SetTag(RugbyScene::Tag::RUGBYMAN);
 		mRugbyMen.push_back(mirroredPlayer);
 
 		if (i == 2) {
@@ -75,6 +77,10 @@ void RugbyScene::OnInitialize()
 			mirroredPlayer->SetAreaIndex(2); // Area C
 		}
 	}
+
+	mBall = CreateEntity<Ball>(height * 0.02f, sf::Color::White);
+	mBall->SetPosition(width/2, height / 2);
+
 }
 
 void RugbyScene::OnUpdate()
@@ -136,6 +142,13 @@ void RugbyScene::OnEvent(const sf::Event& event)
 	else if (event.type == sf::Event::MouseMoved) {
 		if (mSelectedPlayer != nullptr) {
 			mSelectedPlayer->SetPosition(event.mouseMove.x, event.mouseMove.y);
+		}
+	}
+	else if (event.type == sf::Event::KeyPressed) {
+		if (event.key.code == sf::Keyboard::Space) {
+			if (mBall->mOwner == nullptr)
+				return;
+			mBall->mOwner->Shoot();
 		}
 	}
 
