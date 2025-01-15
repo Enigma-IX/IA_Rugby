@@ -26,6 +26,9 @@ void RugbyScene::OnInitialize()
 	mAreas[1] = { 0, 0, width, height / 2 };
 	mAreas[2] = { 0, height / 2, width, height };
 
+	mGoals[0] = { 0, 0, width / 12, height };
+	mGoals[1] = { 11 * width / 12, 0, width, height};
+
 	constexpr size_t numPositions = positions.size();
 	std::array<size_t, numPositions> indices;
 	std::iota(indices.begin(), indices.end(), 0);
@@ -51,7 +54,7 @@ void RugbyScene::OnInitialize()
 		int areaIndex = (i == 2) ? 0 : (i < 2 ? 1 : 2);
 
 		// Create Team1 rugbymen
-		createRugbyMan(x, y, 1, sf::Color::Green, areaIndex);
+		createRugbyMan(x, y, 1, sf::Color::Blue, areaIndex);
 
 		// Create Team2 rugbymen
 		createRugbyMan(1.0f - x, y, 2, sf::Color::Red, areaIndex);
@@ -73,6 +76,12 @@ void RugbyScene::OnUpdate()
 	const AABB& aabb = mAreas[0];
 	Debug::DrawRectangle(aabb.xMin, aabb.yMin, aabb.xMax - aabb.xMin, aabb.yMax - aabb.yMin, sf::Color::Yellow);
 
+	for (int i = 0; i < 2; i++)
+	{
+		const AABB& aabb = mGoals[i];
+
+		Debug::DrawRectangle(aabb.xMin, aabb.yMin, aabb.xMax - aabb.xMin, aabb.yMax - aabb.yMin, sf::Color::White);
+	}
 }
 
 int RugbyScene::GetClickedArea(int x, int y) const

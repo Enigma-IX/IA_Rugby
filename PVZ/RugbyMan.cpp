@@ -99,40 +99,35 @@ void RugbyMan::SetPosition(float x, float y, float ratioX, float ratioY) {
 	ClampPosition();          // Restreint ensuite dans l'area
 }
 
-// void RugbyMan::Shoot()
-// {
-// 	std::vector<RugbyMan*> rugbyMen = GetScene<RugbyScene>()->GetRugbyMen();
-// 
-// 	RugbyMan* closestRugbyMan = rugbyMen[0];
-// 
-// 	Ball* ball = GetScene<RugbyScene>()->GetBall();
-// 
-// 	for (RugbyMan* rugbyMan : rugbyMen)
-// 	{
-// 		//si le rugbyMan est different de this
-// 		if (rugbyMan != this)
-// 		{
-// 			//calculer la distance entre this et rugbyMan			
-// 			float distance = std::sqrt(std::pow(rugbyMan->GetPosition().x - GetPosition().x, 2) + std::pow(rugbyMan->GetPosition().y - GetPosition().y, 2));
-// 			float distance2 = std::sqrt(std::pow(closestRugbyMan->GetPosition().x - GetPosition().x, 2) + std::pow(closestRugbyMan->GetPosition().y - GetPosition().y, 2));
-// 			//si la distance est inferieur a la distance minimale
-// 			if (distance < distance2 && rugbyMan->mTeam == ball->mOwner->mTeam)
-// 			{
-// 				closestRugbyMan = rugbyMan;
-// 			}			
-// 		}
-// 	}
-// 
-// 	// Appeler OnShoot de la ball avec la direction du joueur le plus proche
-// 	ball->OnShoot(closestRugbyMan->GetPosition());
-// }
+void RugbyMan::OnCollision(Entity* pCollidedWith)
+{	
+	
+
+	if (pCollidedWith->IsTag(RugbyScene::Tag::RUGBYMAN))
+	{
+		RugbyMan* rugbyMan = dynamic_cast<RugbyMan*>(pCollidedWith);
+
+		if (rugbyMan->mTeam != mTeam)
+		{
+			Ball* ball = GetScene<RugbyScene>()->GetBall();
+
+			if (ball->mOwner == rugbyMan)
+			{
+				ball->mOwner = this;
+				ball->mPreviousOwner = nullptr;
+			}
+		}
+	}
+	
+}
+
 
 void RugbyMan::Shoot()
 {
 	std::vector<RugbyMan*> rugbyMen = GetScene<RugbyScene>()->GetRugbyMen();
 
 	if (rugbyMen.empty()) {
-		return; // Si aucun joueur, on sort de la fonction
+		return;
 	}
 
 	RugbyMan* closestRugbyMan = nullptr;
@@ -142,16 +137,13 @@ void RugbyMan::Shoot()
 
 	for (RugbyMan* rugbyMan : rugbyMen)
 	{
-		// Si le rugbyMan est différent de this
 		if (rugbyMan != this && rugbyMan->mTeam == ball->mOwner->mTeam)
 		{
-			// Calculer la distance
 			float distance = std::sqrt(
 				std::pow(rugbyMan->GetPosition().x - GetPosition().x, 2) +
 				std::pow(rugbyMan->GetPosition().y - GetPosition().y, 2)
 			);
 
-			// Si la distance est inférieure à la distance minimale
 			if (distance < minDistance)
 			{
 				minDistance = distance;
@@ -160,7 +152,6 @@ void RugbyMan::Shoot()
 		}
 	}
 
-	// Vérifier si un joueur proche a été trouvé
 	if (closestRugbyMan)
 	{
 		ball->OnShoot(closestRugbyMan->GetPosition());
