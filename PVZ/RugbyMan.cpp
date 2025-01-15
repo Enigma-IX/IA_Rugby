@@ -100,7 +100,7 @@ void RugbyMan::Shoot()
 			float distance = std::sqrt(std::pow(rugbyMan->GetPosition().x - GetPosition().x, 2) + std::pow(rugbyMan->GetPosition().y - GetPosition().y, 2));
 			float distance2 = std::sqrt(std::pow(closestRugbyMan->GetPosition().x - GetPosition().x, 2) + std::pow(closestRugbyMan->GetPosition().y - GetPosition().y, 2));
 			//si la distance est inferieur a la distance minimale
-			if (distance < distance2 && rugbyMan->mTeam == mTeam)
+			if (distance < distance2 && rugbyMan->mTeam == ball->mOwner->mTeam)
 			{
 				closestRugbyMan = rugbyMan;
 			}			

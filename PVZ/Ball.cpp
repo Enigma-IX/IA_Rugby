@@ -25,18 +25,18 @@ void Ball::OnCollision(Entity* pCollidedWith)
 
 	if (pCollidedWith->IsTag(RugbyScene::Tag::RUGBYMAN))
 	{
-		auto truc = dynamic_cast<RugbyMan*>(pCollidedWith);
+		auto owner = dynamic_cast<RugbyMan*>(pCollidedWith);
 
-		if (truc == mPreviousOwner)
+		if (owner == mPreviousOwner)
 			return;
 
-		mOwner = truc;
+		mOwner = owner;
 	}
 }
 
 void Ball::OnShoot(sf::Vector2f direction)
 {
-	GoToPosition(direction.x, direction.y, 1000.f);
+	GoToDirection(direction.x, direction.y, 1000.f);
 	mPreviousOwner = mOwner;
 	mOwner = nullptr;
 }
