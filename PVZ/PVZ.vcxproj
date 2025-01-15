@@ -38,6 +38,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="RugbyMan.cpp" />
+    <ClCompile Include="RugbyManAction.cpp" />
+    <ClCompile Include="RugbyManCondition.cpp" />
     <ClCompile Include="RugbyScene.cpp" />
     <ClCompile Include="SampleScene.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -69,6 +71,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="RugbyMan.h" />
+    <ClInclude Include="RugbyManAction.h" />
+    <ClInclude Include="RugbyManCondition.h" />
     <ClInclude Include="RugbyScene.h" />
     <ClInclude Include="SampleScene.h" />
     <ClInclude Include="Scene.h" />

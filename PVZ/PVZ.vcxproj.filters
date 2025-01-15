@@ -19,6 +19,9 @@
     <Filter Include="IA_Rugby">
       <UniqueIdentifier>{0bc3c8eb-6028-49cb-a3bd-2deda2b40799}</UniqueIdentifier>
     </Filter>
+    <Filter Include="IA_Rugby\RugbyManStateMachine">
+      <UniqueIdentifier>{bd16db02-51de-45b7-87cf-2e083147a3e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -69,6 +72,12 @@
     </ClCompile>
     <ClCompile Include="RugbyMan.cpp">
       <Filter>IA_Rugby</Filter>
+    </ClCompile>
+    <ClCompile Include="RugbyManAction.cpp">
+      <Filter>IA_Rugby\RugbyManStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="RugbyManCondition.cpp">
+      <Filter>IA_Rugby\RugbyManStateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +137,12 @@
     </ClInclude>
     <ClInclude Include="RugbyMan.h">
       <Filter>IA_Rugby</Filter>
+    </ClInclude>
+    <ClInclude Include="RugbyManAction.h">
+      <Filter>IA_Rugby\RugbyManStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="RugbyManCondition.h">
+      <Filter>IA_Rugby\RugbyManStateMachine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

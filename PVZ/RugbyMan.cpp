@@ -11,58 +11,58 @@
 
 void RugbyMan::OnInitialize()
 {
-	//mpStateMachine = new StateMachine<Plant>(this, State::Count);
 
-	//mAreaIndex = -1;
-	//mAmmo = mMaxAmmo;
+	mpStateMachine = new StateMachine<RugbyMan>(this, State::Count);
 
-	//SetTag(PVZScene::Tag::PLANT);
+	mAreaIndex = -1;
 
-	////IDLE
-	//{
-	//	Action<Plant>* pIdle = mpStateMachine->CreateAction<PlantAction_Idle>(State::Idle);
+	//SetTag(RugbyMan::Tag::PLANT);
 
-	//	//-> SHOOTING
-	//	{
-	//		auto transition = pIdle->CreateTransition(State::Shooting);
+	//IDLE
+	{
+		Action<RugbyMan>* pIdle = mpStateMachine->CreateAction<PlantAction_Idle>(State::Idle);
 
-	//		auto condition = transition->AddCondition<PlantCondition_ZombieOnLane>();
-	//	}
+		//-> SHOOTING
+		{
+			auto transition = pIdle->CreateTransition(State::Shooting);
 
-	//	//-> RELOADING
-	//	{
-	//		auto transition = pIdle->CreateTransition(State::Reloading);
+			auto condition = transition->AddCondition<PlantCondition_ZombieOnLane>();
+		}
 
-	//		transition->AddCondition<PlantCondition_FullAmmo>(false);
-	//		transition->AddCondition<PlantCondition_ZombieOnLane>(false);
-	//	}
-	//}
+		//-> RELOADING
+		{
+			auto transition = pIdle->CreateTransition(State::Reloading);
 
-	////SHOOTING
-	//{
-	//	Action<Plant>* pShooting = mpStateMachine->CreateAction<PlantAction_Shooting>(State::Shooting);
+			transition->AddCondition<PlantCondition_FullAmmo>(false);
+			transition->AddCondition<PlantCondition_ZombieOnLane>(false);
+		}
+	}
 
-	//	//-> IDLE
-	//	{
-	//		auto transition = pShooting->CreateTransition(State::Idle);
+	//SHOOTING
+	{
+		Action<RugbyMan>* pShooting = mpStateMachine->CreateAction<PlantAction_Shooting>(State::Shooting);
 
-	//		transition->AddCondition<PlantCondition_ZombieOnLane>(false);
-	//	}
+		//-> IDLE
+		{
+			auto transition = pShooting->CreateTransition(State::Idle);
 
-	//	//-> RELOADING
-	//	{
-	//		auto transition = pShooting->CreateTransition(State::Reloading);
+			transition->AddCondition<PlantCondition_ZombieOnLane>(false);
+		}
 
-	//		transition->AddCondition<PlantCondition_NoAmmo>();
-	//	}
-	//}
+		//-> RELOADING
+		{
+			auto transition = pShooting->CreateTransition(State::Reloading);
 
-	////RELOADING
-	//{
-	//	Action<Plant>* pShooting = mpStateMachine->CreateAction<PlantAction_Reloading>(State::Reloading);
-	//}
+			transition->AddCondition<PlantCondition_NoAmmo>();
+		}
+	}
 
-	//mpStateMachine->SetState(State::Idle);
+	//RELOADING
+	{
+		Action<Plant>* pShooting = mpStateMachine->CreateAction<PlantAction_Reloading>(State::Reloading);
+	}
+
+	mpStateMachine->SetState(State::Idle);
 }
 
 

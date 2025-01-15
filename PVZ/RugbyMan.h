@@ -5,6 +5,18 @@
 
 class RugbyMan : public Entity
 {
+
+	StateMachine<RugbyMan>* mpStateMachine;
+
+	enum State
+	{
+		HavingTheBall,
+		TeamMateWithBall,
+		EnemyWithBall,
+
+		Count
+	};
+
 	int mLane = -1;
 
 public:
