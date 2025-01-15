@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.inl" />
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DummyEntity.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -53,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="Condition.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DummyEntity.h" />

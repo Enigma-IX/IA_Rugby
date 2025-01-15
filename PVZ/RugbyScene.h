@@ -2,6 +2,7 @@
 
 #include "GameManager.h"
 #include "RugbyMan.h"
+#include "Ball.h"
 
 
 #include <list>
@@ -24,23 +25,28 @@ class RugbyScene : public Scene
 public:
 	enum Tag
 	{
-		PLAYER,
+		RUGBYMAN,
 		BALL
 	};
 
 	int mLaneRugbyCount[4] = { 0, 0, 0 ,0 };
 	AABB mAreas[3];
 
+	std::vector<RugbyMan*> mRugbyMen;
+	Ball* mBall;
+
 private:
 	int GetClickedArea(int x, int y) const;
 
 	RugbyMan* mSelectedPlayer = nullptr;
-	std::vector<RugbyMan*> mRugbyMen;
 
 public:
 	void OnInitialize() override;
 	void OnEvent(const sf::Event& event) override;
 	void OnUpdate() override;
+
+	std::vector<RugbyMan*> GetRugbyMen() const { return mRugbyMen; };
+	Ball* GetBall() const { return mBall; };
 
 };
 
