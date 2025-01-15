@@ -90,18 +90,6 @@ int RugbyScene::GetClickedArea(int x, int y) const
 
 void RugbyScene::OnEvent(const sf::Event& event)
 {
-	/*if (event.type != sf::Event::EventType::MouseButtonPressed)
-		return;
-
-	int index = GetClickedArea(event.mouseButton.x, event.mouseButton.y);
-
-	if (index == -1)
-		return;
-
-	const AABB* clickedArea = &mAreas[index];
-
-	int y = clickedArea->yMin + (clickedArea->yMax - clickedArea->yMin) / 2;*/
-
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
 		for (RugbyMan* player : mRugbyMen) {
@@ -135,10 +123,8 @@ void RugbyScene::OnEvent(const sf::Event& event)
 		break;
 
 	default:
-		// Aucun traitement pour les autres types d'événements.
 		break;
 	}
-
 }
 
 
