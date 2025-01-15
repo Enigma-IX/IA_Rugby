@@ -36,7 +36,8 @@ void Ball::OnCollision(Entity* pCollidedWith)
 
 void Ball::OnShoot(sf::Vector2f direction)
 {
-	GoToDirection(direction.x, direction.y, 1000.f);
+	//GoToDirection(direction.x, direction.y, 1000.f); // La balle peut sortir de l'écran avec ca
+	GoToPosition(direction.x, direction.y, 1000.f); // La balle s'arretera a la pos du joueur
 	mPreviousOwner = mOwner;
 	mOwner = nullptr;
 }

@@ -48,5 +48,6 @@ public:
 	std::vector<RugbyMan*> GetRugbyMen() const { return mRugbyMen; };
 	Ball* GetBall() const { return mBall; };
 
+	AABB* GetArea(int index) { return &mAreas[index]; };
 };
 
