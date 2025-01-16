@@ -8,7 +8,6 @@
 #include "RugbyScene.h"
 #include "Projectile.h"
 
-#include "StateMachine.h"
 
 #include "Debug.h"
 
@@ -19,68 +18,58 @@ void RugbyMan::OnInitialize()
 
 	mAreaIndex = -1;
 
-	//SetTag(RugbyMan::Tag::PLANT);
+	SetTag(RugbyScene::Tag::RUGBYMAN);
 
-	//IDLE
+	//-> HAVING THE BALL
 	{
-		Action<RugbyMan>* pIdle = mpStateMachine->CreateAction<PlantAction_Idle>(State::Idle);
+		Action<RugbyMan>* pHavingTheBall = mpStateMachine->CreateAction<RugbyManAction_HasBall>(State::HavingTheBall);
 
-		//-> SHOOTING
+		//-> TEAMMATE WITH BALL
 		{
-			auto transition = pIdle->CreateTransition(State::Shooting);
+			auto transition = pHavingTheBall->CreateTransition(State::TeamMateWithBall);
 
-			auto condition = transition->AddCondition<PlantCondition_ZombieOnLane>();
+			auto condition = transition->AddCondition<RugbymanCondition_TeamHasBall>();
 		}
 
-		//-> RELOADING
+		//-> ENEMY WITH BALL
 		{
-			auto transition = pIdle->CreateTransition(State::Reloading);
+			auto transition = pHavingTheBall->CreateTransition(State::EnemyWithBall);
 
-			transition->AddCondition<PlantCondition_FullAmmo>(false);
-			transition->AddCondition<PlantCondition_ZombieOnLane>(false);
-		}
-	}
-
-	//SHOOTING
-	{
-		Action<RugbyMan>* pShooting = mpStateMachine->CreateAction<PlantAction_Shooting>(State::Shooting);
-
-		//-> IDLE
-		{
-			auto transition = pShooting->CreateTransition(State::Idle);
-
-			transition->AddCondition<PlantCondition_ZombieOnLane>(false);
+			auto condition = transition->AddCondition<RugbymanCondition_TeamHasNoBall>();
 		}
 
-		//-> RELOADING
+		//-> HAVING THE BALL
 		{
-			auto transition = pShooting->CreateTransition(State::Reloading);
+			auto transition = pHavingTheBall->CreateTransition(State::HavingTheBall);
 
-			transition->AddCondition<PlantCondition_NoAmmo>();
+			auto condition = transition->AddCondition<RugbymanCondition_HasTheBall>();
 		}
-	}
+	}	
 
-	//RELOADING
-	{
-		Action<Plant>* pShooting = mpStateMachine->CreateAction<PlantAction_Reloading>(State::Reloading);
-	}
-
-	mpStateMachine->SetState(State::Idle);
+	mpStateMachine->SetState(State::EnemyWithBall);
 }
 
 
 
 void RugbyMan::OnUpdate()
 {
-	//const sf::Vector2f& position = GetPosition();
-	//const char* stateName = GetStateName((Plant::State)mpStateMachine->GetCurrentState());
+	const sf::Vector2f& position = GetPosition();
+	const char* stateName = GetStateName((RugbyMan::State)mpStateMachine->GetCurrentState());
 
-	//std::string ammo = std::to_string(mAmmo) + "/" + std::to_string(mMaxAmmo);
+	Debug::DrawText(position.x, position.y - 50, stateName, 0.5f, 0.5f, sf::Color::Red);
 
-	//Debug::DrawText(position.x, position.y - 50, stateName, 0.5f, 0.5f, sf::Color::Red);
-	//Debug::DrawText(position.x, position.y, ammo, 0.5f, 0.5f, sf::Color::Blue);
+	mpStateMachine->Update();
+}
 
-	//mpStateMachine->Update();
+const char* RugbyMan::GetStateName(State state) const
+{
+	switch (state)
+	{
+	case EnemyWithBall: return "EnemyWithBall";
+	case HavingTheBall: return "HavingTheBall";
+	case TeamMateWithBall: return "TeamMateWithBall";
+	default: return "Unknown";
+	}
 }
 
 void RugbyMan::ClampPosition() {

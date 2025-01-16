@@ -3,6 +3,11 @@
 #include "Entity.h"
 #include <SFML/Graphics/Color.hpp>
 
+
+#include "StateMachine.h"
+#include "RugbyManCondition.h"
+#include "RugbyManAction.h"
+
 class RugbyMan : public Entity
 {
 
@@ -27,6 +32,8 @@ public:
 	void SetPosition(float x, float y, float ratioX = 0.5f, float ratioY = 0.5f) override;
 
 	void OnCollision(Entity* pCollidedWith) override;
+
+	const char* GetStateName(State state) const;
 
 	void Shoot();
 
