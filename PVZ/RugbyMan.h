@@ -30,6 +30,7 @@ public:
 	void SetTeam(int team) { mTeam = team; }
 	bool IsMouseOver(const sf::Vector2i& mousePos) const;
 	void SetPosition(float x, float y, float ratioX = 0.5f, float ratioY = 0.5f) override;
+	bool GoToPosition(int x, int y, float speed = -1.f) override;
 
 	void OnCollision(Entity* pCollidedWith) override;
 

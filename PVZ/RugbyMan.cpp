@@ -120,6 +120,26 @@ void RugbyMan::SetPosition(float x, float y, float ratioX, float ratioY) {
 	ClampPosition();          // Restreint ensuite dans l'area
 }
 
+bool RugbyMan::GoToPosition(int x, int y, float speed)
+{
+	sf::Vector2f position = GetPosition();
+
+	AABB* pAssignedArea = GetScene<RugbyScene>()->GetArea(mAreaIndex);
+
+	float clampedX = Clamp<float>(x, pAssignedArea->xMin, pAssignedArea->xMax);
+	float clampedY = Clamp<float>(y, pAssignedArea->yMin, pAssignedArea->yMax);
+
+	if (GoToDirection(static_cast<int>(clampedX), static_cast<int>(clampedY), speed) == false) {
+		return false;
+	}
+
+	mTarget.position = { static_cast<int>(clampedX), static_cast<int>(clampedY) };
+	mTarget.distance = Utils::GetDistance(position.x, position.y, clampedX, clampedY);
+	mTarget.isSet = true;
+
+	return true;
+}
+
 void RugbyMan::OnCollision(Entity* pCollidedWith)
 {	
 	
