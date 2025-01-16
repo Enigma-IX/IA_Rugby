@@ -13,8 +13,6 @@ public:
 	void OnShoot(sf::Vector2f direction);
 
 	RugbyMan* mOwner;
-
-private:
 	RugbyMan* mPreviousOwner;
 
 };

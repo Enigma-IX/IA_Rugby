@@ -26,6 +26,8 @@ public:
 	bool IsMouseOver(const sf::Vector2i& mousePos) const;
 	void SetPosition(float x, float y, float ratioX = 0.5f, float ratioY = 0.5f) override;
 
+	void OnCollision(Entity* pCollidedWith) override;
+
 	void Shoot();
 
 	int mAreaIndex;

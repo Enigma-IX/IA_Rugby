@@ -1,6 +1,8 @@
 #include "Ball.h"
 #include "RugbyScene.h"
 
+#include "Debug.h"
+
 void Ball::OnInitialize()
 {
 	
@@ -12,6 +14,14 @@ void Ball::OnUpdate()
 		SetSpeed(0);
 		sf::Vector2f position = mOwner->GetPosition();
 		SetPosition(position.x, position.y);
+
+		Debug::DrawText(position.x, position.y, "Owner", 0.5f, 0.5f, sf::Color::Green);
+
+	}
+	else if (mPreviousOwner) {
+
+		sf::Vector2f position = mPreviousOwner->GetPosition();
+		Debug::DrawText(position.x, position.y, "Previous Owner", 0.5f, 0.5f, sf::Color::Green);
 	}
 	else {
 		SetSpeed(1000);

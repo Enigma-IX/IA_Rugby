@@ -26,11 +26,13 @@ public:
 	enum Tag
 	{
 		RUGBYMAN,
-		BALL
+		BALL,
+		GOALLINE
 	};
 
 	int mLaneRugbyCount[4] = { 0, 0, 0 ,0 };
 	AABB mAreas[3];
+	AABB mGoals[2];
 
 	std::vector<RugbyMan*> mRugbyMen;
 	Ball* mBall;
