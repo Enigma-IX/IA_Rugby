@@ -158,8 +158,22 @@ void RugbyMan::Shoot()
 
 	for (RugbyMan* rugbyMan : rugbyMen)
 	{
+		if (ball->mOwner == nullptr)
+			return;
+
 		if (rugbyMan != this && rugbyMan->mTeam == ball->mOwner->mTeam)
 		{
+			if (mTeam == 0)
+			{
+				if (rugbyMan->GetPosition().x > GetPosition().x)
+					continue;
+			}
+			else
+			{
+				if (rugbyMan->GetPosition().x < GetPosition().x)
+					continue;
+			}			
+
 			float distance = std::sqrt(
 				std::pow(rugbyMan->GetPosition().x - GetPosition().x, 2) +
 				std::pow(rugbyMan->GetPosition().y - GetPosition().y, 2)

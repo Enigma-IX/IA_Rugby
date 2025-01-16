@@ -40,8 +40,7 @@ void RugbyScene::OnInitialize()
 	auto createRugbyMan = [&](float x, float y, int team, const sf::Color& color, int areaIndex) {
 		RugbyMan* rugbyMan = CreateEntity<RugbyMan>(rugbyManRadius, color);
 		rugbyMan->SetTeam(team);
-		//rugbyMan->SetGoal(mGoals[team]);
-		rugbyMan->SetTag(RugbyScene::Tag::RUGBYMAN);
+		rugbyMan->SetRigidBody(true);
 		rugbyMan->SetAreaIndex(areaIndex);
 		rugbyMan->SetPosition(x * width, y * height);
 		mRugbyMen.push_back(rugbyMan);

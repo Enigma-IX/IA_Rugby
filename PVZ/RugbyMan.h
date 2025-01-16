@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Color.hpp>
 
 
+
 template<typename T>
 class StateMachine;
 
@@ -27,7 +28,6 @@ public:
 	void SetLane(int lane) { mLane = lane; }
 	void SetAreaIndex(int index) { mAreaIndex = index; }
 	void SetTeam(int team) { mTeam = team; }
-	//void SetGoal(AABB& goal) { mGoal = goal; }
 	bool IsMouseOver(const sf::Vector2i& mousePos) const;
 	void SetPosition(float x, float y, float ratioX = 0.5f, float ratioY = 0.5f) override;
 
@@ -39,7 +39,6 @@ public:
 
 	int mAreaIndex;
 	int mTeam;
-	//AABB& mGoal;
 
 protected:
 	void OnInitialize() override;
