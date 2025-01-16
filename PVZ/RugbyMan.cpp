@@ -6,14 +6,16 @@
 #include "Utils.h"
 
 #include "RugbyScene.h"
-#include "Projectile.h"
+
+#include "StateMachine.h"
+#include "RugbyManCondition.h"
+#include "RugbyManAction.h"
 
 
 #include "Debug.h"
 
 void RugbyMan::OnInitialize()
 {
-
 	mpStateMachine = new StateMachine<RugbyMan>(this, State::Count);
 
 	mAreaIndex = -1;
@@ -37,14 +39,44 @@ void RugbyMan::OnInitialize()
 
 			auto condition = transition->AddCondition<RugbymanCondition_TeamHasNoBall>();
 		}
+	}	
+
+	//-> TEAMMATE WITH BALL
+	{
+		Action<RugbyMan>* pTeamMateWithBall = mpStateMachine->CreateAction<RugbyManAction_TeamHasBall>(State::TeamMateWithBall);
+
 
 		//-> HAVING THE BALL
 		{
-			auto transition = pHavingTheBall->CreateTransition(State::HavingTheBall);
+			auto transition = pTeamMateWithBall->CreateTransition(State::HavingTheBall);
 
 			auto condition = transition->AddCondition<RugbymanCondition_HasTheBall>();
 		}
-	}	
+		//-> ENEMY WITH BALL
+		{
+			auto transition = pTeamMateWithBall->CreateTransition(State::EnemyWithBall);
+
+			auto condition = transition->AddCondition<RugbymanCondition_TeamHasNoBall>();
+		}
+	}
+
+	//-> ENEMY WITH BALL
+	{
+		Action<RugbyMan>* pEnemyWithBall = mpStateMachine->CreateAction<RugbyManAction_EnemyHasBall>(State::EnemyWithBall);
+
+		//-> HAVING THE BALL
+		{
+			auto transition = pEnemyWithBall->CreateTransition(State::HavingTheBall);
+
+			auto condition = transition->AddCondition<RugbymanCondition_HasTheBall>();
+		}
+		//-> TEAMMATE WITH BALL
+		{
+			auto transition = pEnemyWithBall->CreateTransition(State::TeamMateWithBall);
+
+			auto condition = transition->AddCondition<RugbymanCondition_TeamHasBall>();
+		}
+	}
 
 	mpStateMachine->SetState(State::EnemyWithBall);
 }

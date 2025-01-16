@@ -4,9 +4,8 @@
 #include <SFML/Graphics/Color.hpp>
 
 
-#include "StateMachine.h"
-#include "RugbyManCondition.h"
-#include "RugbyManAction.h"
+template<typename T>
+class StateMachine;
 
 class RugbyMan : public Entity
 {
@@ -28,6 +27,7 @@ public:
 	void SetLane(int lane) { mLane = lane; }
 	void SetAreaIndex(int index) { mAreaIndex = index; }
 	void SetTeam(int team) { mTeam = team; }
+	//void SetGoal(AABB& goal) { mGoal = goal; }
 	bool IsMouseOver(const sf::Vector2i& mousePos) const;
 	void SetPosition(float x, float y, float ratioX = 0.5f, float ratioY = 0.5f) override;
 
@@ -39,10 +39,19 @@ public:
 
 	int mAreaIndex;
 	int mTeam;
+	//AABB& mGoal;
 
 protected:
 	void OnInitialize() override;
 	void OnUpdate() override;
+
+	friend class RugbyManAction_HasBall;
+	friend class RugbyManAction_TeamHasBall;
+	friend class RugbyManAction_EnemyHasBall;
+
+	friend class RugbymanCondition_HasTheBall;
+	friend class RugbymanCondition_TeamHasBall;
+	friend class RugbymanCondition_TeamHasNoBall;
 
 private:
 

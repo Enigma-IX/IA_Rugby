@@ -40,6 +40,7 @@ void RugbyScene::OnInitialize()
 	auto createRugbyMan = [&](float x, float y, int team, const sf::Color& color, int areaIndex) {
 		RugbyMan* rugbyMan = CreateEntity<RugbyMan>(rugbyManRadius, color);
 		rugbyMan->SetTeam(team);
+		//rugbyMan->SetGoal(mGoals[team]);
 		rugbyMan->SetTag(RugbyScene::Tag::RUGBYMAN);
 		rugbyMan->SetAreaIndex(areaIndex);
 		rugbyMan->SetPosition(x * width, y * height);
@@ -54,10 +55,10 @@ void RugbyScene::OnInitialize()
 		int areaIndex = (i == 2) ? 0 : (i < 2 ? 1 : 2);
 
 		// Create Team1 rugbymen
-		createRugbyMan(x, y, 1, sf::Color::Blue, areaIndex);
+		createRugbyMan(x, y, 0, sf::Color::Blue, areaIndex);
 
 		// Create Team2 rugbymen
-		createRugbyMan(1.0f - x, y, 2, sf::Color::Red, areaIndex);
+		createRugbyMan(1.0f - x, y, 1, sf::Color::Red, areaIndex);
 	}
 
 	mBall = CreateEntity<Ball>(height * 0.02f, sf::Color::White);

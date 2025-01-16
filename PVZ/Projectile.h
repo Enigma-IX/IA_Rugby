@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Entity.h"
-#include "RugbyMan.h"
+#include "Plant.h"
 
 class Projectile : public Entity
 {
@@ -13,6 +13,6 @@ protected:
 
 private:
 
-	RugbyMan* mOwner;
+	Plant* mOwner;
 };
 

@@ -9,6 +9,8 @@ protected:
 	void OnUpdate() override;
 	void OnCollision(Entity* pCollidedWith) override;
 
+	float mSpeed = 100.0f;
+
 public:
 	void OnShoot(sf::Vector2f direction);
 

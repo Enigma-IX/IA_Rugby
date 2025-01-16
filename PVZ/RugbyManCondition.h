@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Condition.h"
-
 #include "RugbyMan.h"
 
 class RugbymanCondition_HasTheBall : public Condition<RugbyMan>
