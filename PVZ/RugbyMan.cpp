@@ -11,12 +11,20 @@
 #include "RugbyManCondition.h"
 #include "RugbyManAction.h"
 
+#define RUGBYMAN_MAX_SPEED 120.f
+#define RUGBYMAN_MIN_SPEED 90.f
+
+#define RUGBYMAN_MAX_FOLLOWOFFSET 110.f
+#define RUGBYMAN_MIN_FOLLOWOFFSET 50.f
 
 #include "Debug.h"
 
 void RugbyMan::OnInitialize()
 {
-	mpStateMachine = new StateMachine<RugbyMan>(this, State::Count);
+	mpStateMachine = new StateMachine<RugbyMan>(this, State::Count);	
+
+	mbaseSpeed = Utils::RandomFloat(RUGBYMAN_MIN_SPEED, RUGBYMAN_MAX_SPEED);
+	mfollowerOffset = Utils::RandomFloat(RUGBYMAN_MIN_FOLLOWOFFSET, RUGBYMAN_MAX_FOLLOWOFFSET);
 
 	mAreaIndex = -1;
 

@@ -1,6 +1,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include <cmath>
+#include <random>
 
 namespace Utils 
 {
@@ -34,4 +35,16 @@ namespace Utils
 
 		return std::atan2(det, dot) * 180 / 3.14159265;
 	}
+
+	float RandomFloat(float min, float max)
+	{
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution<float> dis(min, max);
+
+		float randomFloat = dis(gen);
+
+		return randomFloat;
+	}
+
 }

@@ -46,6 +46,9 @@ public:
 
 	float mTimeSinceLastShot = 0.f;
 
+	int mfollowerOffset;
+	float mbaseSpeed;
+
 protected:
 	void OnInitialize() override;
 	void OnUpdate() override;

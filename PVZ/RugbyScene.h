@@ -53,6 +53,6 @@ public:
 	AABB* GetArea(int index) { return &mAreas[index]; };
 	AABB* GetGoal(int index) { return &mGoals[index]; };
 
-	void Reset();
+	void Reset(int winnerTeam);
 };
 

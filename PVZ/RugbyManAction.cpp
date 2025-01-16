@@ -11,7 +11,7 @@ void RugbyManAction_HasBall::OnStart(RugbyMan* pRugbyMan)
 	int goalDirection = pRugbyMan->mTeam;
 	int newDirection = goalDirection == 0 ? witdh : 0;
 
-	pRugbyMan->GoToDirection(newDirection, pRugbyMan->GetPosition().y, 130.f);
+	pRugbyMan->GoToDirection(newDirection, pRugbyMan->GetPosition().y, pRugbyMan->mbaseSpeed + 30.f);
 
 	pRugbyMan->mTimeSinceLastShot = 0;
 }
@@ -29,7 +29,7 @@ void RugbyManAction_HasBall::OnUpdate(RugbyMan* pRugbyMan)
 
 	if (pRugbyMan->GetPosition(percentage).x > goal->xMin && pRugbyMan->GetPosition(percentage).x < goal->xMax)
 	{
-		pRugbyMan->GetScene<RugbyScene>()->Reset();	
+		pRugbyMan->GetScene<RugbyScene>()->Reset(pRugbyMan->mTeam);
 		return;
 	}
 
@@ -40,7 +40,7 @@ void RugbyManAction_HasBall::OnUpdate(RugbyMan* pRugbyMan)
 	if (pRugbyMan->mTimeSinceLastShot < 3.f)
 		return;	
 
-	pRugbyMan->SetSpeed(100.f);
+	pRugbyMan->SetSpeed(pRugbyMan->mbaseSpeed);
 
 
 	std::vector<RugbyMan*> rugbyMen = pRugbyMan->GetScene<RugbyScene>()->GetRugbyMen();
@@ -91,18 +91,14 @@ void RugbyManAction_TeamHasBall::OnUpdate(RugbyMan* pRugbyMan)
 
 	sf::Vector2f ownerPosition = owner->GetPosition();
 
-	int offset;
+	int offset = pRugbyMan->mfollowerOffset;
 
-	if (owner->mTeam != 0)
+	if (owner->mTeam == 0)
 	{
-		offset = 200;
-	}
-	else
-	{
-		offset = -200;
+		offset = -offset;
 	}
 
-	pRugbyMan->GoToPosition(ownerPosition.x + offset, pRugbyMan->GetPosition().y, 100.f);
+	pRugbyMan->GoToPosition(ownerPosition.x + offset, pRugbyMan->GetPosition().y, pRugbyMan->mbaseSpeed);
 }
 
 void RugbyManAction_EnemyHasBall::OnUpdate(RugbyMan* pRugbyMan)
@@ -116,5 +112,5 @@ void RugbyManAction_EnemyHasBall::OnUpdate(RugbyMan* pRugbyMan)
 
 	sf::Vector2f ballPosition = ball->GetPosition();
 
-	pRugbyMan->GoToPosition(ballPosition.x, ballPosition.y, 100.f);
+	pRugbyMan->GoToPosition(ballPosition.x, ballPosition.y, pRugbyMan->mbaseSpeed);
 }

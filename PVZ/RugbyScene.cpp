@@ -90,7 +90,7 @@ void RugbyScene::OnUpdate()
 	}
 }
 
-void RugbyScene::Reset()
+void RugbyScene::Reset(int winnerTeam)
 {
 	for (RugbyMan* rugbyMan : mRugbyMen)
 	{
@@ -98,9 +98,16 @@ void RugbyScene::Reset()
 		rugbyMan->mTimeSinceLastShot = 0.f;
 	}
 
+	auto potentialOwner = mRugbyMen[rand() % mRugbyMen.size()];
+
+	while (potentialOwner->mTeam == winnerTeam)
+	{
+		potentialOwner = mRugbyMen[rand() % mRugbyMen.size()];
+	}
+
 	mBall->mOwner = nullptr;
 	mBall->mPreviousOwner = nullptr;
-	mBall->mOwner = mRugbyMen[rand() % mRugbyMen.size()];
+	mBall->mOwner = potentialOwner;
 }
 
 int RugbyScene::GetClickedArea(int x, int y) const
