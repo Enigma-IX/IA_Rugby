@@ -26,8 +26,8 @@ void RugbyScene::OnInitialize()
 	mAreas[1] = { 0, 0, width, height / 2 };
 	mAreas[2] = { 0, height / 2, width, height };
 
-	mGoals[0] = { 0, 0, width / 12, height };
-	mGoals[1] = { 11 * width / 12, 0, width, height};
+	mGoals[0] = { 11 * width / 12, 0, width, height};
+	mGoals[1] = { 0, 0, width / 12, height };
 
 	constexpr size_t numPositions = positions.size();
 	std::array<size_t, numPositions> indices;
@@ -43,6 +43,7 @@ void RugbyScene::OnInitialize()
 		rugbyMan->SetRigidBody(true);
 		rugbyMan->SetAreaIndex(areaIndex);
 		rugbyMan->SetPosition(x * width, y * height);
+		rugbyMan->SetInitialPosition(x * width, y * height);
 		mRugbyMen.push_back(rugbyMan);
 		return rugbyMan;
 		};
@@ -87,6 +88,19 @@ void RugbyScene::OnUpdate()
 
 		Debug::DrawRectangle(aabb.xMin, aabb.yMin, aabb.xMax - aabb.xMin, aabb.yMax - aabb.yMin, sf::Color::White);
 	}
+}
+
+void RugbyScene::Reset()
+{
+	for (RugbyMan* rugbyMan : mRugbyMen)
+	{
+		rugbyMan->SetPosition(rugbyMan->GetInitialPosition().x, rugbyMan->GetInitialPosition().y);
+		rugbyMan->mTimeSinceLastShot = 0.f;
+	}
+
+	mBall->mOwner = nullptr;
+	mBall->mPreviousOwner = nullptr;
+	mBall->mOwner = mRugbyMen[rand() % mRugbyMen.size()];
 }
 
 int RugbyScene::GetClickedArea(int x, int y) const

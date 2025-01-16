@@ -1,6 +1,8 @@
 #include "RugbyManAction.h"
 #include "RugbyScene.h"
 
+#include "Debug.h"
+
 void RugbyManAction_HasBall::OnStart(RugbyMan* pRugbyMan)
 {
 	RugbyScene* pRugbyScene = pRugbyMan->GetScene<RugbyScene>();
@@ -9,11 +11,38 @@ void RugbyManAction_HasBall::OnStart(RugbyMan* pRugbyMan)
 	int goalDirection = pRugbyMan->mTeam;
 	int newDirection = goalDirection == 0 ? witdh : 0;
 
-	pRugbyMan->GoToDirection(newDirection, pRugbyMan->GetPosition().y, 100.f);
+	pRugbyMan->GoToDirection(newDirection, pRugbyMan->GetPosition().y, 130.f);
+
+	pRugbyMan->mTimeSinceLastShot = 0;
 }
 
 void RugbyManAction_HasBall::OnUpdate(RugbyMan* pRugbyMan)
 {
+	AABB* goal = pRugbyMan->GetScene<RugbyScene>()->GetGoal(pRugbyMan->mTeam);
+
+	float percentage = 0.1f;
+
+	if (pRugbyMan->mTeam != 0)
+	{
+		percentage = 0.9f;
+	}
+
+	if (pRugbyMan->GetPosition(percentage).x > goal->xMin && pRugbyMan->GetPosition(percentage).x < goal->xMax)
+	{
+		pRugbyMan->GetScene<RugbyScene>()->Reset();	
+		return;
+	}
+
+
+	pRugbyMan->mTimeSinceLastShot += pRugbyMan->GetDeltaTime();
+
+
+	if (pRugbyMan->mTimeSinceLastShot < 3.f)
+		return;	
+
+	pRugbyMan->SetSpeed(100.f);
+
+
 	std::vector<RugbyMan*> rugbyMen = pRugbyMan->GetScene<RugbyScene>()->GetRugbyMen();
 
 	if (rugbyMen.empty()) {

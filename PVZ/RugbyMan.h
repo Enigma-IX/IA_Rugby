@@ -36,10 +36,15 @@ public:
 
 	const char* GetStateName(State state) const;
 
+	sf::Vector2f GetInitialPosition() const { return *mInitialPosition; }
+	void SetInitialPosition(float x, float y) {	mInitialPosition = new sf::Vector2f(x,y); }
+
 	void Shoot();
 
 	int mAreaIndex;
 	int mTeam;
+
+	float mTimeSinceLastShot = 0.f;
 
 protected:
 	void OnInitialize() override;
@@ -56,5 +61,7 @@ protected:
 private:
 
 	void ClampPosition();
+	sf::Vector2f* mInitialPosition;
+
 
 };

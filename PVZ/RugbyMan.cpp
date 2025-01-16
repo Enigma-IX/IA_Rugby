@@ -141,22 +141,23 @@ bool RugbyMan::GoToPosition(int x, int y, float speed)
 }
 
 void RugbyMan::OnCollision(Entity* pCollidedWith)
-{	
-	
+{
 
 	if (pCollidedWith->IsTag(RugbyScene::Tag::RUGBYMAN))
 	{
+		Ball* ball = GetScene<RugbyScene>()->GetBall();
 		RugbyMan* rugbyMan = dynamic_cast<RugbyMan*>(pCollidedWith);
+
+		if (rugbyMan->mTimeSinceLastShot < 4.f)
+			return;
+
+		if (ball->mOwner != rugbyMan)
+			return;
 
 		if (rugbyMan->mTeam != mTeam)
 		{
-			Ball* ball = GetScene<RugbyScene>()->GetBall();
-
-			if (ball->mOwner == rugbyMan)
-			{
-				ball->mOwner = this;
-				ball->mPreviousOwner = nullptr;
-			}
+			ball->mOwner = this;
+			ball->mPreviousOwner = nullptr;
 		}
 	}
 	
@@ -192,7 +193,7 @@ void RugbyMan::Shoot()
 			{
 				if (rugbyMan->GetPosition().x < GetPosition().x)
 					continue;
-			}			
+			}	
 
 			float distance = std::sqrt(
 				std::pow(rugbyMan->GetPosition().x - GetPosition().x, 2) +
@@ -201,11 +202,15 @@ void RugbyMan::Shoot()
 
 			if (distance < minDistance)
 			{
+				if (rugbyMan == ball->mPreviousOwner)
+					continue;
+
 				minDistance = distance;
 				closestRugbyMan = rugbyMan;
 			}
 		}
 	}
+
 
 	if (closestRugbyMan)
 	{
