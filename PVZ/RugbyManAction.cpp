@@ -20,8 +20,6 @@ void RugbyManAction_HasBall::OnUpdate(RugbyMan* pRugbyMan)
 		return;
 	}
 
-	RugbyMan* closestRugbyMan = nullptr;
-
 	float minDistance = 100;
 
 	for (RugbyMan* rugbyMan : rugbyMen)
@@ -32,6 +30,17 @@ void RugbyManAction_HasBall::OnUpdate(RugbyMan* pRugbyMan)
 				std::pow(rugbyMan->GetPosition().x - pRugbyMan->GetPosition().x, 2) +
 				std::pow(rugbyMan->GetPosition().y - pRugbyMan->GetPosition().y, 2)
 			);
+
+			if (pRugbyMan->mTeam == 0)
+			{
+				if (rugbyMan->GetPosition().x < pRugbyMan->GetPosition().x)
+					continue;
+			}
+			else
+			{
+				if (rugbyMan->GetPosition().x > pRugbyMan->GetPosition().x)
+					continue;
+			}
 
 			if (distance < minDistance)
 			{

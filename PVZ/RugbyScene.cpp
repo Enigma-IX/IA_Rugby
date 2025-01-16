@@ -62,6 +62,11 @@ void RugbyScene::OnInitialize()
 
 	mBall = CreateEntity<Ball>(height * 0.02f, sf::Color::White);
 	mBall->SetPosition(width / 2, height / 2);
+	
+
+	srand(time(0));
+	int randomIndex = rand() % mRugbyMen.size();	
+	mBall->mOwner = mRugbyMen[randomIndex];
 }
 
 void RugbyScene::OnUpdate()
