@@ -39,7 +39,7 @@ void RugbyManAction_HasBall::OnUpdate(RugbyMan* pRugbyMan)
 	pRugbyMan->mTimeSinceLastShot += pRugbyMan->GetDeltaTime();
 
 
-	if (pRugbyMan->mTimeSinceLastShot < 1.3f)
+	if (pRugbyMan->mTimeSinceLastShot < 2.f)
 		return;	
 
 	pRugbyMan->SetSpeed(pRugbyMan->mbaseSpeed);
@@ -90,11 +90,11 @@ void RugbyManAction_HasBall::OnUpdate(RugbyMan* pRugbyMan)
 RugbyMan* RugbyManAction_HasBall::FindClosestRugbyMan(RugbyMan* pRugbyMan)
 {
 	RugbyMan* closestRugbyMan = nullptr;
+
 	Ball* ball = pRugbyMan->GetScene<RugbyScene>()->GetBall();
 
-	float minDistance = std::numeric_limits<float>::max();
-
 	std::vector<RugbyMan*> rugbyMen = pRugbyMan->GetScene<RugbyScene>()->GetRugbyMen();
+	std::vector<RugbyMan*> closestRugbyMen;
 
 	for (RugbyMan* rugbyMan : rugbyMen)
 	{
@@ -119,22 +119,88 @@ RugbyMan* RugbyManAction_HasBall::FindClosestRugbyMan(RugbyMan* pRugbyMan)
 				std::pow(rugbyMan->GetPosition().y - pRugbyMan->GetPosition().y, 2)
 			);
 
-			if (distance < minDistance)
-			{
-				if (rugbyMan == ball->mPreviousOwner)
-					continue;
+			if (rugbyMan == ball->mPreviousOwner)
+				continue;
 
-				minDistance = distance;
-				closestRugbyMan = rugbyMan;
+			// Ajoutez le joueur actuel à la liste
+			closestRugbyMen.push_back(rugbyMan);
+		}
+	}
+
+	// Triez les joueurs par distance croissante
+	std::sort(closestRugbyMen.begin(), closestRugbyMen.end(), [pRugbyMan](RugbyMan* a, RugbyMan* b) {
+		float distanceA = std::sqrt(
+			std::pow(a->GetPosition().x - pRugbyMan->GetPosition().x, 2) +
+			std::pow(a->GetPosition().y - pRugbyMan->GetPosition().y, 2)
+		);
+		float distanceB = std::sqrt(
+			std::pow(b->GetPosition().x - pRugbyMan->GetPosition().x, 2) +
+			std::pow(b->GetPosition().y - pRugbyMan->GetPosition().y, 2)
+		);
+		return distanceA < distanceB;
+		});
+
+	// Retenez uniquement les 3 plus proches joueurs (si plus de 3 joueurs sont trouvés)
+	if (closestRugbyMen.size() > 3)
+		closestRugbyMen.resize(3);
+
+
+
+	// Parcourez tous les joueurs pour trouver celui qui est le moins entouré
+	RugbyMan* leastSurroundedRugbyMan = nullptr;
+	int minOpponentsCount = std::numeric_limits<int>::max(); // Initialisé à une valeur très élevée
+	float maxAverageDistance = -std::numeric_limits<float>::max(); // Initialisé à une valeur très basse
+
+	for (RugbyMan* candidate : closestRugbyMen)
+	{
+		Debug::DrawLine(pRugbyMan->GetPosition().x, pRugbyMan->GetPosition().y, candidate->GetPosition().x, candidate->GetPosition().y, sf::Color::White);
+
+		int opponentsCount = 0;
+		float totalDistance = 0.0f;
+
+		// Parcourez tous les rugbymen pour trouver ceux qui ne sont pas de la même équipe
+		for (RugbyMan* otherRugbyMan : rugbyMen)
+		{
+			if (otherRugbyMan->mTeam != candidate->mTeam)
+			{
+				float distance = std::sqrt(
+					std::pow(otherRugbyMan->GetPosition().x - candidate->GetPosition().x, 2) +
+					std::pow(otherRugbyMan->GetPosition().y - candidate->GetPosition().y, 2)
+				);
+
+				// Si un adversaire est dans un rayon de 150, augmentez le compteur
+				if (distance <= 50.0f)
+				{
+					opponentsCount++;
+					totalDistance += distance; // Ajoutez la distance au total
+				}
+			}
+		}
+
+		// Si ce joueur a moins d'adversaires autour, mettez à jour
+		if (opponentsCount < minOpponentsCount)
+		{
+			minOpponentsCount = opponentsCount;
+			maxAverageDistance = (opponentsCount > 0) ? totalDistance / opponentsCount : 0.0f;
+			leastSurroundedRugbyMan = candidate;
+		}
+		// Si le nombre d'adversaires est égal, vérifiez la distance moyenne
+		else if (opponentsCount == minOpponentsCount)
+		{
+			float averageDistance = (opponentsCount > 0) ? totalDistance / opponentsCount : 0.0f;
+			if (averageDistance > maxAverageDistance)
+			{
+				maxAverageDistance = averageDistance;
+				leastSurroundedRugbyMan = candidate;
 			}
 		}
 	}
 
-	if (closestRugbyMan == nullptr)
+	if (leastSurroundedRugbyMan == nullptr)
 		return nullptr;
 
-	Debug::DrawLine(pRugbyMan->GetPosition().x, pRugbyMan->GetPosition().y, closestRugbyMan->GetPosition().x, closestRugbyMan->GetPosition().y, sf::Color::Magenta);
-	return closestRugbyMan;
+	Debug::DrawLine(pRugbyMan->GetPosition().x, pRugbyMan->GetPosition().y, leastSurroundedRugbyMan->GetPosition().x, leastSurroundedRugbyMan->GetPosition().y, sf::Color::Magenta);
+	return leastSurroundedRugbyMan;
 }
 
 void RugbyManAction_TeamHasBall::OnUpdate(RugbyMan* pRugbyMan)

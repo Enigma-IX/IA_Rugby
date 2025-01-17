@@ -156,7 +156,7 @@ void RugbyMan::OnCollision(Entity* pCollidedWith)
 		Ball* ball = GetScene<RugbyScene>()->GetBall();
 		RugbyMan* rugbyMan = dynamic_cast<RugbyMan*>(pCollidedWith);
 
-		if (rugbyMan->mTimeSinceLastShot < 4.f)
+		if (rugbyMan->mTimeSinceLastShot < 2.f)
 			return;
 
 		if (ball->mOwner != rugbyMan)

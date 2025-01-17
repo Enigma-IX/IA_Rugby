@@ -15,13 +15,13 @@ void Ball::OnUpdate()
 		sf::Vector2f position = mOwner->GetPosition();
 		SetPosition(position.x, position.y);
 
-		Debug::DrawText(position.x, position.y, "Owner", 0.5f, 0.5f, sf::Color::Green);
+		Debug::DrawText(position.x, position.y + mOwner->GetRadius(), "Owner", 0.5f, 0.5f, sf::Color::Green);
 
 	}
 	else if (mPreviousOwner) {
 
 		sf::Vector2f position = mPreviousOwner->GetPosition();
-		Debug::DrawText(position.x, position.y, "Previous Owner", 0.5f, 0.5f, sf::Color::Green);
+		Debug::DrawText(position.x, position.y + mPreviousOwner->GetRadius(), "Previous Owner", 0.5f, 0.5f, sf::Color::Green);
 	}
 	else {
 		SetSpeed(mSpeed);
