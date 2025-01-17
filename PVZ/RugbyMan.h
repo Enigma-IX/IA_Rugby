@@ -41,6 +41,8 @@ public:
 
 	void Shoot(RugbyMan* target);
 
+	void RandomizeStats();
+
 	int mAreaIndex;
 	int mTeam;
 

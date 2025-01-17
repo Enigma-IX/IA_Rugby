@@ -122,12 +122,11 @@ RugbyMan* RugbyManAction_HasBall::FindClosestRugbyMan(RugbyMan* pRugbyMan)
 			if (rugbyMan == ball->mPreviousOwner)
 				continue;
 
-			// Ajoutez le joueur actuel à la liste
 			closestRugbyMen.push_back(rugbyMan);
 		}
 	}
 
-	// Triez les joueurs par distance croissante
+	// Tri les joueurs par distance croissante
 	std::sort(closestRugbyMen.begin(), closestRugbyMen.end(), [pRugbyMan](RugbyMan* a, RugbyMan* b) {
 		float distanceA = std::sqrt(
 			std::pow(a->GetPosition().x - pRugbyMan->GetPosition().x, 2) +
@@ -140,16 +139,15 @@ RugbyMan* RugbyManAction_HasBall::FindClosestRugbyMan(RugbyMan* pRugbyMan)
 		return distanceA < distanceB;
 		});
 
-	// Retenez uniquement les 3 plus proches joueurs (si plus de 3 joueurs sont trouvés)
 	if (closestRugbyMen.size() > 3)
 		closestRugbyMen.resize(3);
 
 
 
-	// Parcourez tous les joueurs pour trouver celui qui est le moins entouré
+	// Trouver celui qui est le moins entouré
 	RugbyMan* leastSurroundedRugbyMan = nullptr;
-	int minOpponentsCount = std::numeric_limits<int>::max(); // Initialisé à une valeur très élevée
-	float maxAverageDistance = -std::numeric_limits<float>::max(); // Initialisé à une valeur très basse
+	int minOpponentsCount = std::numeric_limits<int>::max();
+	float maxAverageDistance = -std::numeric_limits<float>::max();
 
 	for (RugbyMan* candidate : closestRugbyMen)
 	{
@@ -158,7 +156,7 @@ RugbyMan* RugbyManAction_HasBall::FindClosestRugbyMan(RugbyMan* pRugbyMan)
 		int opponentsCount = 0;
 		float totalDistance = 0.0f;
 
-		// Parcourez tous les rugbymen pour trouver ceux qui ne sont pas de la même équipe
+		
 		for (RugbyMan* otherRugbyMan : rugbyMen)
 		{
 			if (otherRugbyMan->mTeam != candidate->mTeam)
@@ -168,23 +166,20 @@ RugbyMan* RugbyManAction_HasBall::FindClosestRugbyMan(RugbyMan* pRugbyMan)
 					std::pow(otherRugbyMan->GetPosition().y - candidate->GetPosition().y, 2)
 				);
 
-				// Si un adversaire est dans un rayon de 150, augmentez le compteur
-				if (distance <= 50.0f)
+				if (distance <= 70.0f)
 				{
 					opponentsCount++;
-					totalDistance += distance; // Ajoutez la distance au total
+					totalDistance += distance;
 				}
 			}
 		}
 
-		// Si ce joueur a moins d'adversaires autour, mettez à jour
 		if (opponentsCount < minOpponentsCount)
 		{
 			minOpponentsCount = opponentsCount;
 			maxAverageDistance = (opponentsCount > 0) ? totalDistance / opponentsCount : 0.0f;
 			leastSurroundedRugbyMan = candidate;
 		}
-		// Si le nombre d'adversaires est égal, vérifiez la distance moyenne
 		else if (opponentsCount == minOpponentsCount)
 		{
 			float averageDistance = (opponentsCount > 0) ? totalDistance / opponentsCount : 0.0f;

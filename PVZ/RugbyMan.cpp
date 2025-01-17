@@ -21,10 +21,9 @@
 
 void RugbyMan::OnInitialize()
 {
-	mpStateMachine = new StateMachine<RugbyMan>(this, State::Count);	
+	mpStateMachine = new StateMachine<RugbyMan>(this, State::Count);
 
-	mbaseSpeed = Utils::RandomFloat(RUGBYMAN_MIN_SPEED, RUGBYMAN_MAX_SPEED);
-	mfollowerOffset = Utils::RandomFloat(RUGBYMAN_MIN_FOLLOWOFFSET, RUGBYMAN_MAX_FOLLOWOFFSET);
+	RandomizeStats();
 
 	mAreaIndex = -1;
 
@@ -182,6 +181,12 @@ void RugbyMan::Shoot(RugbyMan* target)
 	}
 }
 
+
+void RugbyMan::RandomizeStats()
+{
+	mbaseSpeed = Utils::RandomFloat(RUGBYMAN_MIN_SPEED, RUGBYMAN_MAX_SPEED);
+	mfollowerOffset = Utils::RandomFloat(RUGBYMAN_MIN_FOLLOWOFFSET, RUGBYMAN_MAX_FOLLOWOFFSET);
+}
 
 bool RugbyMan::IsMouseOver(const sf::Vector2i& mousePos) const
 {

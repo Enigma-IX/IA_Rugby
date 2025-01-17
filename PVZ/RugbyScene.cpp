@@ -96,6 +96,8 @@ void RugbyScene::Reset(int winnerTeam)
 	{
 		rugbyMan->SetPosition(rugbyMan->GetInitialPosition().x, rugbyMan->GetInitialPosition().y);
 		rugbyMan->mTimeSinceLastShot = 0.f;
+
+		rugbyMan->RandomizeStats();
 	}
 
 	auto potentialOwner = mRugbyMen[rand() % mRugbyMen.size()];
