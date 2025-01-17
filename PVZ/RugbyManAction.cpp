@@ -20,6 +20,8 @@ void RugbyManAction_HasBall::OnUpdate(RugbyMan* pRugbyMan)
 {
 	AABB* goal = pRugbyMan->GetScene<RugbyScene>()->GetGoal(pRugbyMan->mTeam);
 
+	FindClosestRugbyMan(pRugbyMan);
+
 	float percentage = 0.1f;
 
 	if (pRugbyMan->mTeam != 0)
@@ -37,7 +39,7 @@ void RugbyManAction_HasBall::OnUpdate(RugbyMan* pRugbyMan)
 	pRugbyMan->mTimeSinceLastShot += pRugbyMan->GetDeltaTime();
 
 
-	if (pRugbyMan->mTimeSinceLastShot < 3.f)
+	if (pRugbyMan->mTimeSinceLastShot < 1.3f)
 		return;	
 
 	pRugbyMan->SetSpeed(pRugbyMan->mbaseSpeed);
@@ -73,12 +75,67 @@ void RugbyManAction_HasBall::OnUpdate(RugbyMan* pRugbyMan)
 
 			if (distance < minDistance)
 			{
-				pRugbyMan->Shoot();
+				RugbyMan* closestRugbyMan = FindClosestRugbyMan(pRugbyMan);
+
+				if (closestRugbyMan == nullptr)
+					return;
+				
+				pRugbyMan->Shoot(closestRugbyMan);
 			}
 		}
 	}
 }
 
+
+RugbyMan* RugbyManAction_HasBall::FindClosestRugbyMan(RugbyMan* pRugbyMan)
+{
+	RugbyMan* closestRugbyMan = nullptr;
+	Ball* ball = pRugbyMan->GetScene<RugbyScene>()->GetBall();
+
+	float minDistance = std::numeric_limits<float>::max();
+
+	std::vector<RugbyMan*> rugbyMen = pRugbyMan->GetScene<RugbyScene>()->GetRugbyMen();
+
+	for (RugbyMan* rugbyMan : rugbyMen)
+	{
+		if (ball->mOwner == nullptr)
+			return nullptr;
+
+		if (rugbyMan != pRugbyMan && rugbyMan->mTeam == ball->mOwner->mTeam)
+		{
+			if (pRugbyMan->mTeam == 0)
+			{
+				if (rugbyMan->GetPosition().x > pRugbyMan->GetPosition().x)
+					continue;
+			}
+			else
+			{
+				if (rugbyMan->GetPosition().x < pRugbyMan->GetPosition().x)
+					continue;
+			}
+
+			float distance = std::sqrt(
+				std::pow(rugbyMan->GetPosition().x - pRugbyMan->GetPosition().x, 2) +
+				std::pow(rugbyMan->GetPosition().y - pRugbyMan->GetPosition().y, 2)
+			);
+
+			if (distance < minDistance)
+			{
+				if (rugbyMan == ball->mPreviousOwner)
+					continue;
+
+				minDistance = distance;
+				closestRugbyMan = rugbyMan;
+			}
+		}
+	}
+
+	if (closestRugbyMan == nullptr)
+		return nullptr;
+
+	Debug::DrawLine(pRugbyMan->GetPosition().x, pRugbyMan->GetPosition().y, closestRugbyMan->GetPosition().x, closestRugbyMan->GetPosition().y, sf::Color::Magenta);
+	return closestRugbyMan;
+}
 
 void RugbyManAction_TeamHasBall::OnUpdate(RugbyMan* pRugbyMan)
 {

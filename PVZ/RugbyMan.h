@@ -39,7 +39,7 @@ public:
 	sf::Vector2f GetInitialPosition() const { return *mInitialPosition; }
 	void SetInitialPosition(float x, float y) {	mInitialPosition = new sf::Vector2f(x,y); }
 
-	void Shoot();
+	void Shoot(RugbyMan* target);
 
 	int mAreaIndex;
 	int mTeam;

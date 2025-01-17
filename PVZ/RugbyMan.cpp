@@ -172,57 +172,13 @@ void RugbyMan::OnCollision(Entity* pCollidedWith)
 }
 
 
-void RugbyMan::Shoot()
+void RugbyMan::Shoot(RugbyMan* target)
 {
-	std::vector<RugbyMan*> rugbyMen = GetScene<RugbyScene>()->GetRugbyMen();
-
-	if (rugbyMen.empty()) {
-		return;
-	}
-
-	RugbyMan* closestRugbyMan = nullptr;
 	Ball* ball = GetScene<RugbyScene>()->GetBall();
 
-	float minDistance = std::numeric_limits<float>::max();
-
-	for (RugbyMan* rugbyMan : rugbyMen)
+	if (target)
 	{
-		if (ball->mOwner == nullptr)
-			return;
-
-		if (rugbyMan != this && rugbyMan->mTeam == ball->mOwner->mTeam)
-		{
-			if (mTeam == 0)
-			{
-				if (rugbyMan->GetPosition().x > GetPosition().x)
-					continue;
-			}
-			else
-			{
-				if (rugbyMan->GetPosition().x < GetPosition().x)
-					continue;
-			}	
-
-			float distance = std::sqrt(
-				std::pow(rugbyMan->GetPosition().x - GetPosition().x, 2) +
-				std::pow(rugbyMan->GetPosition().y - GetPosition().y, 2)
-			);
-
-			if (distance < minDistance)
-			{
-				if (rugbyMan == ball->mPreviousOwner)
-					continue;
-
-				minDistance = distance;
-				closestRugbyMan = rugbyMan;
-			}
-		}
-	}
-
-
-	if (closestRugbyMan)
-	{
-		ball->OnShoot(closestRugbyMan->GetPosition());
+		ball->OnShoot(target->GetPosition());
 	}
 }
 

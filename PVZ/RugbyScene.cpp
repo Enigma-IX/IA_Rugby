@@ -152,8 +152,12 @@ void RugbyScene::OnEvent(const sf::Event& event)
 	case sf::Event::KeyPressed:
 		if (event.key.code == sf::Keyboard::Space) {
 			if (mBall->mOwner == nullptr)
-				return;
-			mBall->mOwner->Shoot();
+				break;
+
+			if (mBall->mOwner == mSelectedPlayer)
+				break;
+
+			mBall->mOwner->Shoot(mSelectedPlayer);
 		}
 		break;
 
