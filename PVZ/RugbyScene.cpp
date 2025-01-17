@@ -156,7 +156,13 @@ void RugbyScene::OnEvent(const sf::Event& event)
 			if (mBall->mOwner == nullptr)
 				break;
 
+			if (mSelectedPlayer == nullptr)
+				break;
+
 			if (mBall->mOwner == mSelectedPlayer)
+				break;
+
+			if (mBall->mOwner->mTeam != mSelectedPlayer->mTeam)
 				break;
 
 			mBall->mOwner->Shoot(mSelectedPlayer);
